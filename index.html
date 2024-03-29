@@ -6,6 +6,73 @@
     <title>Lista de Contatos</title>
     <link rel="stylesheet" href="main.css - lista de contato.css">
     <link rel="stylesheet" href="main.js - lista de contatos.js">
+    <style>
+    *{
+    padding: 0;
+    margin: 0;
+}
+
+main {
+    padding: 10px;
+    height: 80vh;
+}
+
+form {
+    margin: 10px;
+    border: 1px solid gray;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 1px 1px gray;
+    text-align: center;
+}
+
+input{
+    margin-bottom: 5px;
+    font-size: 16px;
+    border-radius: 10px;
+}
+
+input[type="text"] {
+    padding: 5px;
+    outline: none;
+    width: 90%;
+}
+
+input[type="submit"]{
+    padding: 5px 10px;
+    margin-bottom: 5px;
+    background-color: lightgreen;
+    width: 50%;
+}
+
+.list {
+    padding: 10px;
+    margin-top: 10px;
+    height: 60%;
+    background-color: lightblue;
+}
+
+ul {
+    list-style: none;
+    overflow: scroll;
+    height: 100%;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+li{
+    border-bottom: 1px solid darkslategray;
+    margin-top: 5px;
+}
+
+button {
+    margin-left: 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: red;
+}
+
+</style>
 </head>
 <body>
         <main>
@@ -22,6 +89,52 @@
             </div>
         </main>
 
+        <script>
+        let lista = localStorage.getItem("minhaLista");
 
+            const formulario = document.querySelector("form");
+            const ulPessoas = document.querySelector("ul");
+            
+            if (lista) {
+                lista = JSON.parse(lista);
+            } else {
+                lista = [];
+            }
+            
+            listar();
+            
+            
+            formulario.addEventListener("submit",function (e) {
+                e.preventDefault();
+                let novaPessoa = new Object();
+                novaPessoa.nome = this.nome.value;
+                novaPessoa.telefone = this.telefone.value;
+                
+                lista.push(novaPessoa);
+            
+                this.reset();
+            
+                localStorage.setItem("minhaLista", JSON.stringify(lista));
+            
+                listar();
+            })
+            
+            function listar(filtro='') {
+                ulPessoas.innerHTML = "";
+                lista.forEach((item,key) => {
+            
+                    if (item.nome.toUpperCase().indexOf(filtro.toUpperCase()) >= 0 || filtro ==""){
+                        linha = document.createElement('li');
+            
+                        let s = `<button>[Excluir]</button><button>[Editar]</button>`
+            
+                        linha.innerHTML = "Nome: " + item.nome + " Telefone: " + item.telefone + s;
+                        ulPessoas.appendChild(linha);
+                    }
+                });
+            }  
+            
+            
+        </script>    
 </body>
 </html>
